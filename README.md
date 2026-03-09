@@ -1,4 +1,4 @@
-# Smart Supermarket Management System
+# Supermarket Management System
 
 A web-based management system for small and medium-sized supermarkets, built with Python Flask and SQLite. The system provides role-based access for different staff, streamlining daily operations like sales, inventory, purchasing, and membership management.
 
