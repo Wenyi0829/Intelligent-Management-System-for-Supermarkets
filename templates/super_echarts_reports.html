@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts Line Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+  <style>
+    .chart-container {
+      display: flex;
+      justify-content: center; /* 图表水平居中 */
+      align-items: center; /* 图表垂直居中 */
+      height: 100vh; /* 设置父容器高度为视口高度 */
+    }
+
+    .chart {
+      width: 800px;
+      height: 700px;
+    }
+    #button1 {
+            position: fixed;
+            bottom: 20px;
+            left: 55%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+    }
+    #button2 {
+            position: fixed;
+            bottom: 20px;
+            left: 45%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div id="button1" onclick="redirectToSuperEchartsReports()">查看总报表</div>
+<div id="button2" onclick="goback()">返回</div>
+<div class="chart-container">
+  <div id="chart1" class="chart"></div>
+  <div id="chart2" class="chart"></div>
+</div>
+
+<script>
+  // 初始化图表实例
+  var chart1 = echarts.init(document.getElementById('chart1'));
+
+  // 发送AJAX请求获取按年统计的销售额数据
+  var xhr1 = new XMLHttpRequest();
+  xhr1.open('GET', '/query_sales_yearly');
+
+  xhr1.onload = function() {
+    if (xhr1.status === 200) {
+
+      // 获取数据
+      var data = JSON.parse(xhr1.responseText);
+
+      // 数据处理
+      var years = data.map(item => item.year);
+      var amountSumYearly = data.map(item => item.amount_sum);
+
+      // 渲染图表
+      var option1 = {
+          title: {
+              text: '按年统计的销售额变化',
+              left: 'center'
+          },
+          xAxis: {
+            type: 'category',
+            name: '年份',
+            data: years
+          },
+          yAxis: {
+              type: 'value',
+              name: '销售总额 /（元）',
+          },
+          series: [{
+              data: amountSumYearly,
+              type: 'line',
+              label: {
+                  show: true, // 显示标签
+                  position: 'top', // 标签位置：顶部
+                  formatter: function (params) {
+                      return params.value.toFixed(1); // 设置数值格式为保留一位小数的金额单位
+                  }
+              }
+          }]
+      };
+      chart1.setOption(option1);
+    }
+  };
+
+  xhr1.send();
+
+  // 初始化第二个图表实例
+var chart2 = echarts.init(document.getElementById('chart2'));
+
+// 发送AJAX请求获取按月统计的销售额数据
+var xhr2 = new XMLHttpRequest();
+xhr2.open('GET', '/query_sales_monthly');
+
+xhr2.onload = function() {
+  if (xhr2.status === 200) {
+
+    // 获取数据
+    var data = JSON.parse(xhr2.responseText);
+
+    // 数据处理
+    var months = data.map(item => item.month);
+    var amountSumMonthly = data.map(item => item.amount_sum);
+
+    // 渲染图表
+    var option2 = {
+      title: {
+        text: '按月统计的销售额变化',
+        left: 'center'
+      },
+      xAxis: {
+        type: 'category',
+        name: '月份',
+        data: months
+      },
+      yAxis: {
+        type: 'value',
+        name: '销售总额 /（元）',
+      },
+      series: [{
+        data: amountSumMonthly,
+        type: 'line',
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function(params) {
+            return params.value.toFixed(1);
+          }
+        }
+      }]
+    };
+    chart2.setOption(option2);
+  }
+};
+
+xhr2.send();
+        function redirectToSuperEchartsReports() {
+            window.location.href = "echarts_reportall";
+        }
+        function goback() {
+            window.location.href = "/super/sales/1";
+        }
+    </script>
+
+</body>
+</html>

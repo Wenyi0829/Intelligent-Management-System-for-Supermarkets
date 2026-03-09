@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>进销存系统</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center; /* 将表格内容居中对齐 */
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            text-align: center; /* 将标题居中对齐 */
+        }
+
+        .total-amount {
+            font-weight: bold;
+            text-align: center; /* 将总金额居中对齐 */
+            font-size: 18px; /* 增大总金额的字体大小 */
+            margin-top: 50px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #0069d9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .btn-return {
+            float: right;
+        }
+
+        .btn-query {
+            display: inline-block;
+        }
+
+
+    </style>
+    <script>
+     function goback() {
+            window.location.href = "/supplyer";
+        }
+</script>
+</head>
+<body>
+<header>
+    <h1>进销存系统</h1>
+</header>
+
+<div class="container">
+<div class="button-container">
+    <button type="submit" name="返回" onclick="goback()" class="btn btn-primary btn-return">返回</button>
+
+</div>
+<form method="post" action="/Supplyer/PurchasePlan">
+    <!-- 其他表单元素 -->
+    <button type="submit" class="btn btn-primary btn-query" name="查询进货计划">查询进货计划</button>
+    {% if purchase_plan %}
+    <h3 style="font-size: 20px;">进货计划</h3>
+    <table>
+        <tr>
+            <th>产品ID</th>
+            <th>产品名称</th>
+            <th>计划进货数量</th>
+            <th>计划进货时间</th>
+            <th>自动入库登记</th>
+        </tr>
+        {% for item in purchase_plan %}
+        <tr>
+            <td>{{ item.product_id }}</td>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.purchase_date }}</td>
+            <td>
+                <input type="checkbox" name="auto_stock_register[]" value="{{ item.product_id }}">
+                <input type="hidden" name="purchase_date_{{ item.product_id }}" value="{{ item.purchase_date }}">
+                <input type="hidden" name="quantity_{{ item.product_id }}" value="{{ item.quantity }}">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <input type="submit" value="提交" name="submit">
+    {% endif %}
+</form>
+
+<form method="post" action="/Supplyer/PurchasePlan">
+    <h3 style="font-size: 20px;">手动进货</h3>
+    <div class="form-group">
+        <label for="product_id">商品ID</label>
+        <input type="text" class="form-control" id="product_id" name="product_id" placeholder="请输入商品ID">
+    </div>
+    <div class="form-group">
+        <label for="quantity">进货数量</label>
+        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="请输入进货数量">
+    </div>
+    <div class="form-group">
+        <label for="purchase_date">进货时间</label>
+        <input type="date" class="form-control" id="purchase_date" name="purchase_date">
+    </div>
+    <button type="submit" class="btn btn-primary">添加到采购计划</button>
+</form>
+
+
+    <h3 style="font-size: 20px;">入库记录</h3>
+    <table>
+        <tr>
+            <th>入库单号</th>
+            <th>产品ID</th>
+            <th>入库数量</th>
+            <th>单价</th>
+            <th>总金额</th>
+            <th>入库日期</th>
+            <th>计划进货日期</th>
+            <th>入库状态</th>
+        </tr>
+        {% for record in stock_in_records %}
+        <tr>
+            <td>{{ record['stockin_id'] }}</td>
+            <td>{{ record['product_id'] }}</td>
+            <td>{{ record['quantity'] }}</td>
+            <td>{{ record['unit_price'] }}</td>
+            <td>{{ record['total_price'] }}</td>
+            <td>{{ record['stockin_date'] }}</td>
+            <td>{{ record['planned_purchase_date'] }}</td>
+            <td>{{ record['stockin_status'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3 class="total-amount">总金额：{{ total_amount }}</h3>
+
+    <div style="text-align: center;"> <!-- 将打印记录链接居中显示 -->
+        <a href="/Supplyer/PurchasePlan?sale_date={{ sale_date }}&print_records=true">打印记录</a>
+    </div>
+</div>
+
+</body>
+</html>

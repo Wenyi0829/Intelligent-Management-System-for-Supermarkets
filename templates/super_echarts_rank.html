@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts Bar Chart</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+  <style>
+    .chart-container {
+      display: flex;
+      justify-content: center; /* 图表水平居中 */
+      align-items: center; /* 图表垂直居中 */
+      height: 100vh; /* 设置父容器高度为视口高度 */
+    }
+
+    #chart1,
+    #chart2 {
+      width: 800px;
+      height: 700px;
+    }
+
+    .chart-title {
+      text-align: center; /* 标题居中 */
+    }
+    #button {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #f0f0f0;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="button" onclick="goback()">返回</div>
+  <div class="chart-container">
+    <div id="chart1"></div>
+    <div id="chart2"></div>
+  </div>
+
+  <script>
+
+    // 初始化图表实例
+    var chart1 = echarts.init(document.getElementById('chart1'));
+    var chart2 = echarts.init(document.getElementById('chart2'));
+
+    // 发送ajax请求
+    var xhr1 = new XMLHttpRequest();
+    xhr1.open('GET', '/query_sales_employee');
+
+    xhr1.onload = function() {
+      if (xhr1.status === 200) {
+
+        // 获取数据
+        var data = JSON.parse(xhr1.responseText);
+
+        // 数据处理
+        var employeeIds = data.map(item => item.employee_id);
+        var amountSum = data.map(item => item.amount_sum);
+
+        // 对数据进行从大到小排序
+        var employeeData = [];
+        for (var i = 0; i < employeeIds.length; i++) {
+            employeeData.push({
+                id: employeeIds[i],
+                sum: amountSum[i]
+            });
+        }
+        employeeData.sort((a, b) => b.sum - a.sum);
+
+        // 获取排序后的员工编号和销售总额
+        employeeIds = employeeData.map(item => item.id);
+        amountSum = employeeData.map(item => item.sum);
+
+        // 渲染图表
+        var option1 = {
+            title: {
+                text: '员工销售额排行',
+                left: 'center'
+            },
+
+            xAxis: {
+              type: 'category',
+              name: '员工编号',
+              data: employeeIds
+            },
+
+            yAxis: {
+                type: 'value',
+                name: '销售总额 /（元）',
+            },
+
+            series: [{
+                data: amountSum,
+                type: 'bar',
+                label: {
+                    show: true, // 显示标签
+                    position: 'top', // 标签位置：顶部
+                    formatter: function (params) {
+                        return params.value.toFixed(1); // 设置数值格式为保留一位小数的金额单位
+                    }
+                }
+            }]
+        };
+
+        chart1.setOption(option1);
+      }
+    }
+
+    xhr1.send();
+
+    // 发送ajax请求
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open('GET', '/query_sales_product');
+
+    xhr2.onload = function() {
+      if (xhr2.status === 200) {
+
+        // 获取数据
+        var data = JSON.parse(xhr2.responseText);
+
+        // 数据处理
+        var productIds = data.map(item => item.product_id);
+        var amountSumProduct = data.map(item => item.amount_sum_product);
+
+        // 对数据进行从大到小排序
+        var productData = [];
+        for (var i = 0; i < productIds.length; i++) {
+            productData.push({
+                id: productIds[i],
+                sum: amountSumProduct[i]
+            });
+        }
+        productData.sort((a, b) => b.sum - a.sum);
+
+        // 获取排序后的员工编号和销售总额
+        productIds = productData.map(item => item.id);
+        amountSumProduct = productData.map(item => item.sum);
+
+        // 渲染图表
+        var option2 = {
+            title: {
+                text: '各产品销量排行',
+                left: 'center'
+            },
+
+            xAxis: {
+              type: 'category',
+              name: '产品编号',
+              data: productIds
+            },
+
+            yAxis: {
+                type: 'value',
+                name: '销售总额 /（元）',
+            },
+
+            series: [{
+                data: amountSumProduct,
+                type: 'bar',
+                label: {
+                    show: true, // 显示标签
+                    position: 'top', // 标签位置：顶部
+                    formatter: function (params) {
+                        return params.value.toFixed(1); // 设置数值格式为保留一位小数的金额单位
+                    }
+                }
+            }]
+        };
+
+        chart2.setOption(option2);
+      }
+    }
+
+    xhr2.send();
+        function goback() {
+            window.location.href = "/super/sales/1";
+        }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>供货商管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+    <script >
+    {% if error %}
+    window.onload = function() {
+        alert("{{ error }}");
+    };
+    {% endif %}
+            function goback() {
+            window.location.href = "/super";
+        }
+</script>
+</head>
+
+{% block content %}
+<body>
+<script>$(document).ready(function(c) {
+	$('.close').on('click', function(c){
+		$('.login-form').fadeOut('slow', function(c){
+	  		$('.login-form').remove();
+		});
+	});
+});
+</script>
+ <h1>供货商信息</h1>
+<div class="show-form">
+	<div class="close" onclick="goback();"></div>
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+
+
+
+    <form action="" method="post">
+        <table width="600" border="1" align="center">
+            <h4 align="center">供货商信息</h4>
+            <tr>
+                <th align="center">供货商ID</th>
+                <th align="center">供货商名称</th>
+                <th align="center">供货商地址</th>
+                <th align="center">联系电话</th>
+                <th align="center">选项</th>
+            </tr>
+            {% for supplier in suppliers %}
+            <tr>
+                <th>{{supplier[0]}}</th>
+                <th>{{supplier[1]}}</th>
+                <th>{{supplier[2]}}</th>
+                <th>{{supplier[3]}}</th>
+                <th align="center"><input type="radio" name="checkbox" value={{ supplier[0] }}></th>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class=actions align = "center" >
+	        <input align="left" type=submit name="add" value="添加" >
+            <input align="center" type="submit" name="modify" value="修改">
+            <input align="right" type="submit" name="delete" value="删除">
+	    </div>
+
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    </div>
+
+{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+  {% endwith %}
+    </div>
+</body>
+{% endblock %}
+
+</html>

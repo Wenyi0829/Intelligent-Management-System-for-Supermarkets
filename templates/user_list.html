@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>付款</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+</head>
+
+<body>
+    <h1>交易列表</h1>
+<div class="show-form">
+	<div class="close" onclick="goToUserPage()"></div>
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+
+            {% if error %}
+        <div class=error>
+          <strong>Error : </strong> {{error}}
+        </div>
+    {% endif %}
+    <form action="" method="post">
+        <table width="600" border="1" align="center">
+            <h4 align="center">我的购物车</h4>
+            <tr>
+                <th align="center">订单号</th>
+                <th align="center">商品编号</th>
+                <th align="center">商品名</th>
+                <th align="center">商品价格</th>
+                <th align="center">购买数量</th>
+                <th align="center">交易时间</th>
+            </tr>
+            {% for record in orders %}
+            <tr>
+                <th>{{record[0]}}</th>
+                <th>{{record[5]}}</th>
+                <th>{{record[6]}}</th>
+                <th>{{record[2]}}</th>
+                <th>{{record[3]}}</th>
+                <th>{{record[4]}}</th>
+            {% endfor %}
+        </table>
+
+    <p>总价：{{ sum }}</p>
+    <p>找零：{{ change }}</p>
+
+    </form>
+</div>
+
+<script>
+    function goToUserPage() {
+        window.location.href = "{{ url_for('user') }}";
+    }
+</script>
+</body>
+</html>

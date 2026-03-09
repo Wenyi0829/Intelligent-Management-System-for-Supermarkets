@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>用户信息</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+<script ></script>
+</head>
+
+{% block content %}
+<body>
+<script>$(document).ready(function(c) {
+	$('.close').on('click', function(c){
+		$('.login-form').fadeOut('slow', function(c){
+	  		$('.login-form').remove();
+		});
+	});
+});
+</script>
+<script>
+        function goback() {
+            window.location.href = "/user";
+        }
+</script>
+<h1>个人信息</h1>
+<div class="show-form">
+	<div class="close" onclick="goback();"></div>
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+            {% if user %}
+            <form>
+                <input type="text" class="text" name="usernid" value="用户编号：{{ user.user_id }}" readonly>
+                <input type="text" class="text" name="username" value="用户名：{{ user.user_name }}" readonly>
+                <input type="text" class="text" name="member" value="是否为会员：{{ user.is_member }}" readonly>
+                <input type="text" class="text" name="member" value="会员到期日期：{{ user.registration_date }}" readonly>
+            </form>
+            {% endif %}
+</div>
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>付款</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+</head>
+
+<body>
+    <h1>注册会员</h1>
+<div class="show-form">
+    <div class="close" onclick="goback()"></div>
+
+    <div class="clear"> </div>
+
+    {% if error %}
+    <div class=error>
+        <strong>Error : </strong> {{error}}
+    </div>
+    {% endif %}
+
+<form action="" method="post">
+    <p>请缴纳100元成为会员：</p>
+    <div class=actions align = "center">
+	        <input align = "center" type=submit name="confirm" value="确认注册">
+        </div>
+</form>
+
+</div>
+
+
+<script>
+    {% if error %}
+        window.onload = function() {
+            alert("{{ error }}");
+        };
+    {% endif %}
+function goback() {
+	window.location.href = "/user";
+}
+</script>
+
+
+
+</body>
+</html>

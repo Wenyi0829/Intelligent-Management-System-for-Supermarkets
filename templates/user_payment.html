@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>付款</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入样式文件 -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel='stylesheet' type='text/css' />
+    <!-- 引入字体 -->
+    <link href='https://fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+    <!-- 自定义样式 -->
+    <style>
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-family: 'PT Sans', sans-serif;
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-family: 'PT Sans', sans-serif;
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: 'PT Sans', sans-serif;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            font-family: 'PT Sans', sans-serif;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #23527c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>付款</h1>
+        	<div class="close" onclick="goback();"></div>
+        <form method="POST" action="{{ url_for('user_payment') }}">
+            <!-- 显示需支付金额 -->
+            <h2>需支付金额：{{ sum }}</h2>
+            <!-- 输入支付金额 -->
+            <p>顾客支付金额：<input type="number" name="customer_payment"></p>
+            <!-- 提交按钮 -->
+            <input class="btn" type="submit" value="确认付款">
+        </form>
+    </div>
+
+    <script>
+        {% if error %}
+         window.onload = function() {
+            alert("{{ error }}");
+        };
+        {% endif %}
+        function goback() {
+	window.location.href = "/user";}
+
+    </script>
+</body>
+</html>

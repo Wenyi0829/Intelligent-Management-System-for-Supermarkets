@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <style>
+        #chart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #button1 {
+            position: fixed;
+            bottom: 20px;
+            left: 55%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #button2 {
+            position: fixed;
+            bottom: 20px;
+            left: 45%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart" style="width: 1600px; height: 800px;"></div>
+    <div id="button1" onclick="redirectToSuperEchartsReports()">查看销售额按年/月变化趋势</div>
+    <div id="button2" onclick="goback()">返回</div>
+    <script>
+        var chartData = {{ data | tojson }};
+        var dates = [];
+        var amounts = [];
+        chartData.forEach(function(item) {
+            dates.push(item[0]);
+            amounts.push(item[1]);
+        });
+        var myChart = echarts.init(document.getElementById('chart'));
+        var option = {
+            title: {
+              text: '销售额趋势',
+              left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    animation: false
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                name: '时间'
+            },
+            yAxis: {
+                type: 'value',
+                name:'销售额'
+            },
+            dataZoom: [
+                {
+                    type: 'slider',   // 设置为滑动型数据区域
+                    start: 0,         // 数据窗口范围的起始百分比
+                    end: 100          // 数据窗口范围的结束百分比
+                },
+                {
+                    type: 'inside'    // 设置为内置型数据区域
+                }
+            ],
+            series: [{
+                data: amounts,
+                type: 'line',
+                areaStyle: {}
+            }]
+        };
+        myChart.setOption(option);
+
+        function redirectToSuperEchartsReports() {
+            window.location.href = "echarts_reports";
+        }
+        function goback() {
+            window.location.href = "/super/sales/1";
+        }
+    </script>
+</body>
+</html>

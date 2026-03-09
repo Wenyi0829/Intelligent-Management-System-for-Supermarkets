@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>员工信息</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+    <link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            margin: 0;
+            flex-direction: column; /* 垂直居中 */
+        }
+        form {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center; /* 让表单内的元素居中 */
+        }
+    </style>
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+<script >
+    {% if error %}
+    window.onload = function() {
+        alert("{{ error }}");
+    };
+    {% endif %}
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+{% block content %}
+<body>
+<script>$(document).ready(function(c) {
+	$('.close').on('click', function(c){
+		$('.login-form').fadeOut('slow', function(c){
+	  		$('.login-form').remove();
+		});
+	});
+});
+
+
+</script>
+ <!--SIGN UP-->
+<h1 style="text-align: center; margin-top: 10px;">员工信息</h1>
+<div class="login-form">
+	<div class="close" onclick="javascript:history.back();"></div>
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+
+            <form action="" method="post">
+                 {% if employees %}
+                     <br>
+                    <label for="supplier_id">员工 ID :</label>
+                    <input type="text" class="test" id="employee_id" name="employee_id" size="30" value="{{employees.employee_id}}">
+                    <br><br><br>
+                    <label for="supplier_name">员工姓名:</label>
+                    <input type="text" class="test" id="employee_name" name="employee_name" size="30" value="{{employees.employee_name}}">
+                    <br><br><br>
+                    <label for="supplier_address">员工密码:</label>
+                    <input type="text" class="test" id="employee_password" name="employee_password" size="30" value="{{employees.employee_password}}">
+                    <br><br><br>
+                    <label for="supplier_phone">员工类型:</label>
+                    <input type="text" class="test" id="employee_type" name="employee_type" size="30" value="{{employees.employee_type}}">
+                    <br><br><br>
+                 {% endif %}
+                <div class="actions">
+                    <a href="/super/employee"><input type="button" value="返回"></a>
+                    <input type="submit" value="修改">
+                </div>
+            </form>
+
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+</div>
+</body>
+{% endblock %}
+</html>

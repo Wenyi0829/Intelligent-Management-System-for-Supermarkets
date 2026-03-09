@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>修改/查询商品详细信息</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+    <link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            margin: 0;
+            flex-direction: column; /* 垂直居中 */
+        }
+        form {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center; /* 让表单内的元素居中 */
+        }
+    </style>
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+<script ></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+		<script>
+			{% if error %}
+            window.onload = function() {
+                alert("{{ error }}");
+            };
+            {% endif %}
+                        function goback() {
+            window.location.href = "/saler/show_product";
+        }
+        </script>
+{% block content %}
+<body>
+<script>$(document).ready(function(c) {
+	$('.close').on('click', function(c){
+		$('.login-form').fadeOut('slow', function(c){
+	  		$('.login-form').remove();
+		});
+	});
+});
+</script>
+ <!--SIGN UP-->
+<br><br><br>
+<h1 style="text-align: center; margin-top: 10px;">查询/修改商品详细信息</h1>
+<div class="login-form">
+	<div class="close" onclick="goback();"></div>
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+
+
+            <form action="" method="post">
+                 {% if products %}
+                    <label for="supplier_id">商品ID :</label>
+                     <br>
+                    <input type="text" class='text' id="product_id" name="product_id" size="30" value="{{products.product_id}}">
+                    <br><br>
+                    <label for="supplier_name">商品名称:</label>
+                    <input type="text" class='text' id="product_name" name="product_name" size="30" value="{{products.product_name}}">
+                    <br><br>
+                    <label for="supplier_address">原始价格:</label>
+                    <input type="text" class='text' id="price" name="price" size="30" value="{{products.price}}">
+                    <br><br>
+                     <div class="radio-group">
+					<input type="radio" class="radio" name="allow_discount" value="1" id="allow_discount" {% if products.allow_discount == 1 %}checked{% endif %}>
+					<label for="allow_discount">允许打折</label>
+
+					<input type="radio" class="radio" name="allow_discount" value="0" id="not_allow_discount" {% if products.allow_discount == 0 %}checked{% endif %}>
+					<label for="not_allow_discount">不允许打折</label>
+				    </div>
+                     <br><br>
+                    <label for="supplier_phone">促销价格:</label>
+                    <input type="text" class='text' id="promotion_price" name="promotion_price" size="30" value="{{products.promotion_price}}">
+                    <br><br>
+                     <label for="supplier_phone">促销开始日期:</label>
+                    <input type="text" class='text' id="promotion_start_date" name="promotion_start_date" size="30" value="{{products.promotion_start_date}}">
+                    <br><br>
+                     <label for="supplier_phone">促销结束日期:</label>
+                    <input type="text" class='text' id="promotion_end_date" name="promotion_end_date" size="30" value="{{ products.promotion_end_date}}">
+                    <br><br>
+                    <div class="radio-group">
+                        <input type="radio" class="radio" name="allow_sales" value="1" id="allow_sales" {% if products.allow_sales == 1 %}checked{% endif %}>
+                        <label for="allow_sales">允许销售</label>
+
+                        <input type="radio" class="radio" name="allow_sales" value="0" id="not_allow_sales" {% if products.allow_sales == 0 %}checked{% endif %}>
+                        <label for="not_allow_sales">不允许销售</label>
+                    </div>
+
+                     <br><br>
+                     <label for="supplier_id">供应商ID:</label>
+                    <input type="text" class='text' id="supplier_id" name="supplier_id" size="30" value="{{products.supplier_id}}">
+                    <br><br>
+                 {% endif %}
+                 <div class="actions">
+                    <input type="submit" value="修改">
+                 </div>
+            </form>
+
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+<script>
+  function formatDate(dateString) {
+    var date = new Date(dateString);
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    return year + "-" + month + "-" + day;
+  }
+</script>
+</div>
+</body>
+{% endblock %}
+</html>

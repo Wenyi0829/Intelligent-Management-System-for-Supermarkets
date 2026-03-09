@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>购买物品</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<meta name="keywords" content="" />
+<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+<!--webfonts-->
+<link href='fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+<link href='fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+<script ></script>
+</head>
+
+{% block content %}
+<body>
+<script>$(document).ready(function(c) {
+	$('.close').on('click', function(c){
+		$('.login-form').fadeOut('slow', function(c){
+	  		$('.login-form').remove();
+		});
+	});
+});
+    function goback() {
+	window.location.href = "/user";
+}
+</script>
+<script>
+    {% if error %}
+        window.onload = function() {
+            alert("{{ error }}");
+        };
+    {% endif %}
+</script>
+ <!--SIGN UP-->
+ <h1>vip注册</h1>
+<div class="show-form">
+	<div class="close" onclick="goback();"></div>
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+
+			 <form action="" method=post>
+					<input type="text" class="text" name="userid" value="用户ID" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '用户ID';}" >
+
+
+                 <div class=actions>
+		<input type="submit" value="确认" >
+	    </div>
+             </form>
+
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+</div>
+</body>
+{% endblock %}
+</html>

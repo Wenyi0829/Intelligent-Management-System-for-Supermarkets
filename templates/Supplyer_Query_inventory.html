@@ -1,0 +1,75 @@
+<!-- Supplyer_Query_inventory.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>库存查询与状态提示</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .overstock {
+            color: red;
+        }
+
+        .enough {
+            color: green;
+        }
+
+        .out-of-stock {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>库存查询与状态提示</h1>
+
+    <table id="inventory-table">
+        <tr>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>价格</th>
+            <th>促销价格</th>
+            <th>促销起日期</th>
+            <th>促销止日期</th>
+            <th>允许打折</th>
+            <th>库存数量</th>
+            <th>库存报警数量</th>
+            <th>计划进货数</th>
+            <th>允许销售</th>
+            <th>供货商编号</th>
+            <th>状态</th>
+        </tr>
+        {% for item in inventoryData %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[6] }}</td>
+            <td>{{ item[7] }}</td>
+            <td>{{ item[8] }}</td>
+            <td>{{ item[9] }}</td>
+            <td>{{ item[10] }}</td>
+            <td>{{ item[11] }}</td>
+            <td class="{% if item[7] > item[8] %}enough{% elif item[7] <= item[8] and item[7] > 0 %}overstock{% else %}out-of-stock{% endif %}">
+                {% if item[7] > item[8] %}库存充裕{% elif item[7] <= item[8] and item[7] > 0 %}库存紧张{% else %}缺货{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
